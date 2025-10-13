@@ -4,7 +4,7 @@ The grammar is represented using EBNF with a few minor extensions.
 
 ## Name conventions
 
-- `_kind`: A set of possible literals that distinguish a rule (e.g. `assignment_kind`, `attribute_kind`)
+- `_kind`: A set of possible terminals that distinguish a rule (e.g. `assignment_kind`, `attribute_kind`)
 - `_parent`: An item of a greater category (e.g. `loop_expression`, `iterator_loop`)
 - `_list`: A sequence of a minor rule (e.g. `parameter_list`, `expression_list`)
 - `_clause`: Optional component starting with a keyword (e.g. `where_clause`, `of_clause`)
