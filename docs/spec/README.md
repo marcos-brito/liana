@@ -90,7 +90,7 @@ hex_digit = "0" .. "9" | "a" .. "f" ;
 ## Identifier
 
 ```ebnf
-identifier = letter { letter | decimal_digit } ;
+identifier = letter, { letter | decimal_digit } ;
 qualified_identifier = identifier, { ".", identifier } ;
 ```
 
