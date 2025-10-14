@@ -345,7 +345,7 @@ statement = ( assignment_statement | expression ), ";" ;
 ## Assignment
 
 ```ebnf
-assignment_statement = assignment_kind, identifier, [ type_hint ], "=", expression ;
+assignment_statement = assignment_kind, identifier, [ ":", type ], "=", expression ;
 assignment_kind = "val" | "var" ;
 ```
 
