@@ -404,7 +404,14 @@ unary_operator = "!" | "-" | "+" ;
 
 ```ebnf
 binary_expression = expression, binary_operator, expression ;
-binary_operator = "+" | "-" | "*" | "/" | "%" | "&&" | "||" | "|>" ;
+binary_operator
+    = "+" | "-"
+    | "*" | "/"
+    | "&&" | "||"
+    | ">" | ">="
+    | "<" | "<="
+    | "==" | "!="
+    | "|>" | "%" ;
 ```
 
 ## Closure
