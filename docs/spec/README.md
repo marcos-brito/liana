@@ -119,9 +119,9 @@ integer_literal
     | octal_literal
     | hex_literal
 
-integer_literal = decimal_digit , { [ "_" ], decimal_digit } ;
+decimal_literal = decimal_digit , { [ "_" ], decimal_digit } ;
 binary_literal = "0", "b", [ "_" ],  binary_digit , { [ "_" ], binary_digit } ;
-octal_literal = "0", "b", [ "_" ],  octal_digit , { [ "_" ], octal_digit } ;
+octal_literal = "0", "o", [ "_" ],  octal_digit , { [ "_" ], octal_digit } ;
 hex_literal = "0", "x", [ "_" ],  hex_digit , { [ "_" ], hex_digit } ;
 ```
 
