@@ -202,7 +202,7 @@ function_declaration =
     "(", [ parameter_list ], ")",
     [ ":", type ],
     [ where_clause ]
-    compound_expression ;
+    ( compound_expression | ";" ) ;
 
 parameter_list = parameter, { ",", parameter } ;
 parameter = [ assignment_kind ], identifier, ":", type ;
