@@ -221,7 +221,7 @@ fun amount_of_money_in_my_bank_account(a: i32, b: i32): i32 -> a + b;
 ## Import
 
 ```ebnf
-import_declaration = "imp", import ;
+import_declaration = "imp", import, ";" ;
 import
     = regular_import
     | renamed_import
@@ -229,9 +229,9 @@ import
     | block_import ;
 
 import_list = import, { ",", import } ;
-regular_import = qualified_identifier, ";" ;
-renamed_import = qualified_identifier, "as", identifier, ";" ;
-wildcard_import = qualified_identifier, ".*", ";" ;
+regular_import = qualified_identifier ;
+renamed_import = qualified_identifier, "as", identifier ;
+wildcard_import = qualified_identifier, ".*" ;
 block_import = qualified_identifier, "{", import_list, "}" ;
 ```
 
