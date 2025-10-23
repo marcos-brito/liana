@@ -531,7 +531,8 @@ fun bar(ast: Ast, count: i32, fob: Foo, bar: Bar) -> Ast;
 ```
 type = ( concrete_type | generic_type ), [ type_kind ] ;
 type_kind = "!" | "?" ;
-concrete_type = qualified_identifier, [ "[", type, "]" ] ;
+type_list = type, { ",", type } ;
+concrete_type = qualified_identifier, [ "[", type_list, "]" ] ;
 generic_type = "[", identifier, "]" ;
 ```
 
