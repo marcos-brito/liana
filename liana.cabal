@@ -1,0 +1,57 @@
+cabal-version:      3.0
+name:               liana
+version:            0.1.0.0
+-- synopsis:
+-- description:
+license:            
+license-file:       LICENSE
+author:             Marcos Brito
+maintainer:         marcos.brito0507@gmail.com
+-- copyright:
+category:           Language
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common warnings
+    ghc-options: -Wall
+
+library
+    import:           warnings
+    exposed-modules:  
+        Parser.Base,
+        Syntax.Base,
+    -- other-modules:
+    -- other-extensions:
+    build-depends:
+        base ^>=4.17.2.1,
+        parsec >=3.1,
+    hs-source-dirs:   src
+    default-language: Haskell2010
+
+executable liana
+    import:           warnings
+    main-is:          Main.hs
+    -- other-modules:
+    -- other-extensions:
+    build-depends:
+        base ^>=4.17.2.1,
+        liana
+
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
+test-suite spec
+    type: exitcode-stdio-1.0
+    main-is: Spec.hs
+    hs-source-dirs: test
+    ghc-options: -Wall
+    build-depends:
+        base ^>=4.17.2.1,
+        hspec ==2.*,
+        parsec >=3.1,
+        liana
+    other-modules:
+        Parser.BaseSpec
+    default-language: Haskell2010
+    build-tool-depends: hspec-discover:hspec-discover == 2.*
