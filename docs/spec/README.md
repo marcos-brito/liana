@@ -135,10 +135,25 @@ hex_literal = "0", "x", [ "_" ],  hex_digit , { [ "_" ], hex_digit } ;
 
 ### Float literals
 
-### Textual
+```ebnf
+float_literal
+    = { decimal_literal }, "." { decimal_literal } [ exponent ] ;
+    | decimal_literal, exponent
+    | "." decimal_literal, [ exponent ] ;
+
+exponent = "e", [ "+" | "-" ], decimal_literal ;
+```
 
 ```
-escaped_char = "\" ( "a" | "b" | "f" | "n" | "r" | "t" | "v" | `\` | "'" | `"` ) ;
+31.43
+37.12e+32
+12.84e-11
+11e-32
+.45
+.45e+83
+.72e-83
+```
+
 ```
 
 #### Char literals
