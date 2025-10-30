@@ -106,6 +106,7 @@ foo2._bar_2
 literal
     = integer_literal
     | float_literal
+    | boolean_literal
     | char_literal
     | string_literal ;
 ```
@@ -152,6 +153,12 @@ exponent = "e", [ "+" | "-" ], decimal_literal ;
 .45
 .45e+83
 .72e-83
+```
+
+### Boolean literals
+
+```ebnf
+boolean_literal = "true" | "false" ;
 ```
 
 ```
