@@ -138,9 +138,13 @@ hex_literal = "0", "x", [ "_" ],  hex_digit , { [ "_" ], hex_digit } ;
 
 ```ebnf
 float_literal
-    = { decimal_literal }, "." { decimal_literal } [ exponent ] ;
-    | decimal_literal, exponent
-    | "." decimal_literal, [ exponent ] ;
+    = fractional_float_literal
+    | exponent_float_literal
+    | dot_float_literal ;
+
+fractional_float_literal = decimal_literal, "." decimal_literal, [ exponent ] ;
+exponent_float_literal = decimal_literal, exponent ;
+dot_float_literal = "." decimal_literal, [ exponent ] ;
 
 exponent = "e", [ "+" | "-" ], decimal_literal ;
 ```
