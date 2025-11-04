@@ -8,3 +8,6 @@ data IntegerLiteral
   | OctalLiteral String
   | HexLiteral String
   deriving (Eq, Show)
+
+data BooleanLiteral = True | False
+  deriving (Eq, Show)

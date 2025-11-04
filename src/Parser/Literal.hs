@@ -2,6 +2,7 @@ module Parser.Literal where
 
 import Parser.Base
 import Syntax.Literal
+import Prelude hiding (True, False)
 import Text.Parsec hiding (hexDigit)
 
 integerLiteral :: Parsec String st IntegerLiteral
@@ -37,3 +38,6 @@ baseInteger prefix parser con = do
     optional $ char '_'
     parser
   return $ con $ first : rest
+
+booleanLiteral :: Parsec String st BooleanLiteral
+booleanLiteral = (string "true" >> return True) <|> (string "false" >> return False)

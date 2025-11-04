@@ -4,6 +4,7 @@ import Parser.Literal
 import Syntax.Literal
 import Test.Hspec
 import Text.Parsec
+import Prelude hiding (True, False)
 
 spec :: Spec
 spec = do
@@ -23,3 +24,10 @@ spec = do
     it "should parse hex integers" $ do
       parse hexLiteral "" "0xf9ab" `shouldBe` Right (HexLiteral "f9ab")
       parse hexLiteral "" "0x_f9_ab" `shouldBe` Right (HexLiteral "f9ab")
+
+  describe "bool" $ do
+    it "should parse boolean literals" $ do
+      parse booleanLiteral "" "true" `shouldBe` Right True
+      parse booleanLiteral "" "false" `shouldBe` Right False
+
+
