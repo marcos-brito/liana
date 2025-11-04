@@ -4,7 +4,7 @@ import Parser.Literal
 import Syntax.Literal
 import Test.Hspec
 import Text.Parsec
-import Prelude hiding (True, False)
+import Prelude hiding (False, True)
 
 spec :: Spec
 spec = do
@@ -30,4 +30,63 @@ spec = do
       parse booleanLiteral "" "true" `shouldBe` Right True
       parse booleanLiteral "" "false" `shouldBe` Right False
 
+  describe "float" $ do
+    it "should parse a float with both sides" $ do
+      parse floatLiteral "" "31.43"
+        `shouldBe` Right
+          ( FloatLiteral
+              (Just $ DecimalLiteral "31")
+              (Just $ DecimalLiteral "43")
+              Nothing
+          )
 
+    it "should parse a float with just the exponent" $ do
+      parse floatLiteral "" "31e12"
+        `shouldBe` Right
+          ( FloatLiteral
+              (Just $ DecimalLiteral "31")
+              Nothing
+              (Just $ Exponent Nothing (DecimalLiteral "12"))
+          )
+
+  it "should parse a float starting with a dot" $ do
+    parse floatLiteral "" ".32"
+      `shouldBe` Right
+        ( FloatLiteral
+            Nothing
+            (Just $ DecimalLiteral "32")
+            Nothing
+        )
+
+    parse floatLiteral "" ".32e13"
+      `shouldBe` Right
+        ( FloatLiteral
+            Nothing
+            (Just $ DecimalLiteral "32")
+            (Just $ Exponent Nothing (DecimalLiteral "13"))
+        )
+
+  it "should parse a float with an exponent" $ do
+    parse floatLiteral "" "31.43e12"
+      `shouldBe` Right
+        ( FloatLiteral
+            (Just $ DecimalLiteral "31")
+            (Just $ DecimalLiteral "43")
+            (Just $ Exponent Nothing (DecimalLiteral "12"))
+        )
+
+    parse floatLiteral "" "31.43e+12"
+      `shouldBe` Right
+        ( FloatLiteral
+            (Just $ DecimalLiteral "31")
+            (Just $ DecimalLiteral "43")
+            (Just $ Exponent (Just Pos) (DecimalLiteral "12"))
+        )
+
+    parse floatLiteral "" "31.43e-12"
+      `shouldBe` Right
+        ( FloatLiteral
+            (Just $ DecimalLiteral "31")
+            (Just $ DecimalLiteral "43")
+            (Just $ Exponent (Just Neg) (DecimalLiteral "12"))
+        )
