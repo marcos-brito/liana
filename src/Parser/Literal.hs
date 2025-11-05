@@ -3,46 +3,49 @@ module Parser.Literal where
 import Parser.Base
 import Syntax.Literal
 import Text.Parsec hiding (hexDigit)
-import Prelude hiding (False, True, exponent)
+import Prelude hiding (exponent)
 
-integerLiteral :: Parsec String st IntegerLiteral
+-- literal :: Parsec String st Literal
+-- literal = integerLiteral
+
+integerLiteral :: Parsec String st Literal
 integerLiteral = decimalLiteral <|> binaryLiteral <|> octalLiteral <|> hexLiteral
 
-decimalLiteral :: Parsec String st IntegerLiteral
+decimalLiteral :: Parsec String st Literal
 decimalLiteral = do
   first <- decimalDigit
   rest <- many $ do
     optional (char '_')
     decimalDigit
-  return $ DecimalLiteral (first : rest)
+  return $ IntegerLiteral Dec (first : rest)
 
-binaryLiteral :: Parsec String st IntegerLiteral
-binaryLiteral = baseInteger "0b" binaryDigit BinaryLiteral
+binaryLiteral :: Parsec String st Literal
+binaryLiteral = baseInteger "0b" binaryDigit Bin
 
-octalLiteral :: Parsec String st IntegerLiteral
-octalLiteral = baseInteger "0o" octalDigit OctalLiteral
+octalLiteral :: Parsec String st Literal
+octalLiteral = baseInteger "0o" octalDigit Oct
 
-hexLiteral :: Parsec String st IntegerLiteral
-hexLiteral = baseInteger "0x" hexDigit HexLiteral
+hexLiteral :: Parsec String st Literal
+hexLiteral = baseInteger "0x" hexDigit Hex
 
 baseInteger ::
   String ->
   Parsec String st Char ->
-  (String -> IntegerLiteral) ->
-  Parsec String st IntegerLiteral
-baseInteger prefix parser con = do
+  Base ->
+  Parsec String st Literal
+baseInteger prefix parser base = do
   _ <- string prefix
   optional $ char '_'
   first <- parser
   rest <- many $ do
     optional $ char '_'
     parser
-  return $ con $ first : rest
+  return $ IntegerLiteral base (first : rest)
 
-floatLiteral :: Parsec String st FloatLiteral
+floatLiteral :: Parsec String st Literal
 floatLiteral = try fractionalFloatLiteral <|> try exponentFloatLiteral <|> dotFloatLiteral
 
-fractionalFloatLiteral :: Parsec String st FloatLiteral
+fractionalFloatLiteral :: Parsec String st Literal
 fractionalFloatLiteral = do
   i <- decimalLiteral
   _ <- char '.'
@@ -50,13 +53,13 @@ fractionalFloatLiteral = do
   e <- optionMaybe exponent
   return $ FloatLiteral (Just i) (Just f) e
 
-exponentFloatLiteral :: Parsec String st FloatLiteral
+exponentFloatLiteral :: Parsec String st Literal
 exponentFloatLiteral = do
   i <- decimalLiteral
   e <- optionMaybe exponent
   return $ FloatLiteral (Just i) Nothing e
 
-dotFloatLiteral :: Parsec String st FloatLiteral
+dotFloatLiteral :: Parsec String st Literal
 dotFloatLiteral = do
   _ <- char '.'
   f <- decimalLiteral
@@ -73,5 +76,7 @@ exponent = do
         <|> (char '-' >> return Neg)
   Exponent sign <$> decimalLiteral
 
-booleanLiteral :: Parsec String st BooleanLiteral
-booleanLiteral = (string "true" >> return True) <|> (string "false" >> return False)
+booleanLiteral :: Parsec String st Literal
+booleanLiteral =
+  (string "true" >> return (BooleanLiteral True))
+    <|> (string "false" >> return (BooleanLiteral False))

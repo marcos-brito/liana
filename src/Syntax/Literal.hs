@@ -1,26 +1,20 @@
 module Syntax.Literal where
 
-data Literal = IntegerLiteral IntegerLiteral
-
-data IntegerLiteral
-  = DecimalLiteral String
-  | BinaryLiteral String
-  | OctalLiteral String
-  | HexLiteral String
+data Literal
+  = IntegerLiteral Base String
+  | BooleanLiteral Bool
+  | FloatLiteral (Maybe Literal) (Maybe Literal) (Maybe Exponent)
   deriving (Eq, Show)
 
-data BooleanLiteral = True | False
+data Base
+  = Dec
+  | Bin
+  | Oct
+  | Hex
   deriving (Eq, Show)
-
-data FloatLiteral = FloatLiteral
-  { intPart :: Maybe IntegerLiteral,
-    fracPart :: Maybe IntegerLiteral,
-    expo :: Maybe Exponent
-  }
-  deriving (Show, Eq)
 
 data Sign = Pos | Neg
   deriving (Eq, Show)
 
-data Exponent = Exponent (Maybe Sign) IntegerLiteral
+data Exponent = Exponent (Maybe Sign) Literal
   deriving (Eq, Show)
