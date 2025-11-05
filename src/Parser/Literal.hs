@@ -5,8 +5,8 @@ import Syntax.Literal
 import Text.Parsec hiding (hexDigit)
 import Prelude hiding (exponent)
 
--- literal :: Parsec String st Literal
--- literal = integerLiteral
+literal :: Parsec String st Literal
+literal = integerLiteral <|> floatLiteral <|> booleanLiteral
 
 integerLiteral :: Parsec String st Literal
 integerLiteral = decimalLiteral <|> binaryLiteral <|> octalLiteral <|> hexLiteral
