@@ -1,5 +1,6 @@
 module Syntax.Expression where
 
+import Syntax.Base
 import Syntax.Literal
 
 data Expression
@@ -8,7 +9,6 @@ data Expression
   | LiteralExpression Literal
   deriving (Eq, Show)
 
-  deriving (Eq, Show)
 data UnaryOperator = Not | Neg | Pos
   deriving (Eq, Show)
 
@@ -29,3 +29,12 @@ data BinaryOperator
   | Compose
   | Mod
   deriving (Eq, Show)
+
+data ExpressionList
+  = RawExpressionList [Expression]
+  | LabeledExpressionList [LabeledExpression]
+  deriving (Eq, Show)
+
+data LabeledExpression = LabeledExpression Identifier Expression
+  deriving (Eq, Show)
+

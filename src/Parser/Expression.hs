@@ -1,19 +1,14 @@
 module Parser.Expression where
 
 import Data.Functor.Identity (Identity)
+import Parser.Base
 import Parser.Literal
 import Syntax.Expression
 import Text.Parsec
 import Text.Parsec.Expr
 
-expression :: Parsec String st Expression
-expression = buildExpressionParser table term
 
-term :: Parsec String st Expression
-term = literalExpression
 
-literalExpression :: Parsec String st Expression
-literalExpression = LiteralExpression <$> literal
 
 table :: OperatorTable String st Identity Expression
 table =
@@ -46,3 +41,28 @@ unary op con = Prefix (string op >> return con)
 
 binary :: String -> (a -> a -> a) -> Assoc -> Operator String st Identity a
 binary op con = Infix (string op >> return con)
+
+expression :: Parsec String st Expression
+expression = buildExpressionParser table term
+
+term :: Parsec String st Expression
+term = literalExpression
+
+literalExpression :: Parsec String st Expression
+literalExpression = LiteralExpression <$> literal
+
+expressionList :: Parsec String st ExpressionList
+expressionList = try labeledExpressionList <|> rawExpressionList
+
+rawExpressionList :: Parsec String st ExpressionList
+rawExpressionList = RawExpressionList <$> sepBy expression (char ',')
+
+labeledExpressionList :: Parsec String st ExpressionList
+labeledExpressionList = LabeledExpressionList <$> sepBy labeledExpression (char ',')
+
+labeledExpression :: Parsec String st LabeledExpression
+labeledExpression = do
+  ident <- identifier
+  _ <- char ':'
+  expr <- expression
+  return $ LabeledExpression ident expr
