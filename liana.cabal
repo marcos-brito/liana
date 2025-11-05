@@ -20,8 +20,10 @@ library
     import:           warnings
     exposed-modules:  
         Parser.Base,
+        Parser.Expression,
         Parser.Literal,
         Syntax.Base,
+        Syntax.Expression,
         Syntax.Literal,
     -- other-modules:
     -- other-extensions:
