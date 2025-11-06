@@ -56,8 +56,8 @@ fractionalFloatLiteral = do
 exponentFloatLiteral :: Parser Literal
 exponentFloatLiteral = do
   i <- decimalLiteral
-  e <- optionMaybe exponent
-  return $ FloatLiteral (Just i) Nothing e
+  e <- exponent
+  return $ FloatLiteral (Just i) Nothing (Just e)
 
 dotFloatLiteral :: Parser Literal
 dotFloatLiteral = do
