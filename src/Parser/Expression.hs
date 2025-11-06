@@ -42,25 +42,25 @@ unary op con = Prefix (string op >> return con)
 binary :: String -> (a -> a -> a) -> Assoc -> Operator String st Identity a
 binary op con = Infix (string op >> return con)
 
-expression :: Parsec String st Expression
+expression :: Parser Expression
 expression = buildExpressionParser table term
 
-term :: Parsec String st Expression
+term :: Parser Expression
 term = literalExpression
 
-literalExpression :: Parsec String st Expression
+literalExpression :: Parser Expression
 literalExpression = LiteralExpression <$> literal
 
-expressionList :: Parsec String st ExpressionList
+expressionList :: Parser ExpressionList
 expressionList = try labeledExpressionList <|> rawExpressionList
 
-rawExpressionList :: Parsec String st ExpressionList
+rawExpressionList :: Parser ExpressionList
 rawExpressionList = RawExpressionList <$> sepBy expression (char ',')
 
-labeledExpressionList :: Parsec String st ExpressionList
+labeledExpressionList :: Parser ExpressionList
 labeledExpressionList = LabeledExpressionList <$> sepBy labeledExpression (char ',')
 
-labeledExpression :: Parsec String st LabeledExpression
+labeledExpression :: Parser LabeledExpression
 labeledExpression = do
   ident <- identifier
   _ <- char ':'
