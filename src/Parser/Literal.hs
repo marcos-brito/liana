@@ -6,7 +6,7 @@ import Text.Parsec hiding (hexDigit)
 import Prelude hiding (exponent)
 
 literal :: Parser Literal
-literal = integerLiteral <|> floatLiteral <|> booleanLiteral
+literal = try floatLiteral <|> integerLiteral <|> booleanLiteral
 
 integerLiteral :: Parser Literal
 integerLiteral = decimalLiteral <|> binaryLiteral <|> octalLiteral <|> hexLiteral
