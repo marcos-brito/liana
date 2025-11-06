@@ -201,22 +201,51 @@ fun bar(): i32 -> 4;
 
 # Module
 
-```
-module = { attribute }, { declaration } ;
+```ebnf
+module = { declaration } ;
 ```
 
 # Declarations
 
+```ebnf
+declaration =
+    [ "exp" ],
+    (
+        import_declaration
+        | data_declaration
+        | function_declaration
+        | signature_declaration
+        | instance_declaration
+        | attribute_declaration
+    ) ;
+
 ```
-declaration
-    = { attribute }
-    , [ "exp" ]
-    , import_declaration
-    | export_declaration
-    | data_declaration
-    | function_declaration
-    | signature_declaration
-    | instance_declaration
+
+# Attributes
+
+```ebnf
+attribute_declaration = attribute_kind, qualified_identifier, [ "(", expression_list, ")" ] ;
+attribute_kind = "@" | "@!" ;
+```
+
+```liana
+@deprecated(since: "5.2", note: "Use `bar` instead.")
+fun foo(a: i32) -> a + 1;
+
+@attribute
+data Foo {
+    some: i32,
+    other: i32,
+}
+
+@attribute
+data Bar {
+    Some,
+    Other,
+}
+
+@attribute
+fun bar(ast: Ast, count: i32, fob: Foo, bar: Bar) -> Ast;
 ```
 
 ## Functions
@@ -526,36 +555,9 @@ literal_pattern = literal ;
 underscore_pattern = "_" ;
 ```
 
-# Attributes
-
-```ebnf
-attribbute = attribute_kind, qualified_identifier, [ "(", expression_list, ")" ] ;
-attribute_kind = "@" | "@!" ;
-```
-
-```
-@deprecated(since: "5.2", note: "Use `bar` instead.")
-fun foo(a: i32) -> a + 1;
-
-@attribute
-data Foo {
-    some: i32,
-    other: i32,
-}
-
-@attribute
-data Bar {
-    Some,
-    Other,
-}
-
-@attribute
-fun bar(ast: Ast, count: i32, fob: Foo, bar: Bar) -> Ast;
-```
-
 # Types
 
-```
+```ebnf
 type = ( concrete_type | generic_type ), [ type_kind ] ;
 type_kind = "!" | "?" ;
 type_list = type, { ",", type } ;
