@@ -1,6 +1,7 @@
 module Parser.Literal where
 
 import Parser.Base
+import Parser.Helper
 import Syntax.Literal
 import Text.Parsec hiding (hexDigit)
 import Prelude hiding (exponent)
@@ -78,5 +79,5 @@ exponent = do
 
 booleanLiteral :: Parser Literal
 booleanLiteral =
-  (string "true" >> return (BooleanLiteral True))
-    <|> (string "false" >> return (BooleanLiteral False))
+  BooleanLiteral True <$ symbol "true"
+    <|> BooleanLiteral False <$ symbol "false"
