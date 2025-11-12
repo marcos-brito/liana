@@ -2,13 +2,28 @@ module Parser.Expression where
 
 import Data.Functor.Identity (Identity)
 import Parser.Base
+import Parser.Helper
 import Parser.Literal
 import Syntax.Expression
 import Text.Parsec
 import Text.Parsec.Expr
 
+statement :: Parser Statement
+statement = (try assignmentStatement <|> expressionStatement) <* char ';'
 
+expressionStatement :: Parser Statement
+expressionStatement = ExpressionStatement <$> expression
 
+assignmentStatement :: Parser Statement
+assignmentStatement =
+  AssignmentStatement
+    <$> assignmentKind
+    <*> identifier
+    <*> optionMaybe colonTy
+    <*> optionMaybe (symbol "=" *> expression)
+
+assignmentKind :: Parser AssignmentKind
+assignmentKind = Var <$ symbol "var" <|> Val <$ symbol "val"
 
 table :: OperatorTable String () Identity Expression
 table =
@@ -46,11 +61,29 @@ expression :: Parser Expression
 expression = buildExpressionParser table term
 
 term :: Parser Expression
-term = literalExpression
+term =
+  compoundExpression
+    <|> returnExpression
+    <|> groupExpression
+    <|> literalExpression
 
 literalExpression :: Parser Expression
 literalExpression = LiteralExpression <$> literal
 
+compoundExpression :: Parser Expression
+compoundExpression = arrowExpression <|> blockExpression
+
+arrowExpression :: Parser Expression
+arrowExpression = ArrowExpression <$> (reservedOp "->" *> expression)
+
+blockExpression :: Parser Expression
+blockExpression = BlockExpression <$> braces (many statement)
+
+groupExpression :: Parser Expression
+groupExpression = GroupExpression <$> parens expression
+
+returnExpression :: Parser Expression
+returnExpression = ReturnExpression <$> (symbol "return" >> expression)
 expressionList :: Parser ExpressionList
 expressionList = try labeledExpressionList <|> rawExpressionList
 

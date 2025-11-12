@@ -3,10 +3,22 @@ module Syntax.Expression where
 import Syntax.Base
 import Syntax.Literal
 
+data Statement
+  = AssignmentStatement AssignmentKind Identifier (Maybe Type) (Maybe Expression)
+  | ExpressionStatement Expression
+  deriving (Eq, Show)
+
+data AssignmentKind = Var | Val
+  deriving (Eq, Show)
+
 data Expression
   = UnaryExpression UnaryOperator Expression
   | BinaryExpression BinaryOperator Expression Expression
+  | ArrowExpression Expression
+  | BlockExpression [Statement]
+  | GroupExpression Expression
   | LiteralExpression Literal
+  | ReturnExpression Expression
   deriving (Eq, Show)
 
 data UnaryOperator = Not | Neg | Pos

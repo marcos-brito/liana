@@ -73,3 +73,6 @@ commaSep = P.commaSep lexer
 
 commaSep1 :: Parser a -> Parser [a]
 commaSep1 = P.commaSep1 lexer
+
+colonTy :: Parser Type
+colonTy = symbol ":" *> ty
