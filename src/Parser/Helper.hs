@@ -70,3 +70,6 @@ braces = P.braces lexer
 
 commaSep :: Parser a -> Parser [a]
 commaSep = P.commaSep lexer
+
+commaSep1 :: Parser a -> Parser [a]
+commaSep1 = P.commaSep1 lexer

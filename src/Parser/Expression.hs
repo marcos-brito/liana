@@ -10,7 +10,7 @@ import Text.Parsec.Expr
 
 
 
-table :: OperatorTable String st Identity Expression
+table :: OperatorTable String () Identity Expression
 table =
   [ [ unary "!" (UnaryExpression Not),
       unary "+" (UnaryExpression Pos),
@@ -36,11 +36,11 @@ table =
     [binary "|>" (BinaryExpression Pipe) AssocLeft]
   ]
 
-unary :: String -> (a -> a) -> Operator String st Identity a
-unary op con = Prefix (string op >> return con)
+unary :: String -> (a -> a) -> Operator String () Identity a
+unary op con = Prefix (reservedOp op >> return con)
 
-binary :: String -> (a -> a -> a) -> Assoc -> Operator String st Identity a
-binary op con = Infix (string op >> return con)
+binary :: String -> (a -> a -> a) -> Assoc -> Operator String () Identity a
+binary op con = Infix (reservedOp op >> return con)
 
 expression :: Parser Expression
 expression = buildExpressionParser table term
@@ -55,14 +55,10 @@ expressionList :: Parser ExpressionList
 expressionList = try labeledExpressionList <|> rawExpressionList
 
 rawExpressionList :: Parser ExpressionList
-rawExpressionList = RawExpressionList <$> sepBy expression (char ',')
+rawExpressionList = RawExpressionList <$> commaSep1 expression
 
 labeledExpressionList :: Parser ExpressionList
-labeledExpressionList = LabeledExpressionList <$> sepBy labeledExpression (char ',')
+labeledExpressionList = LabeledExpressionList <$> commaSep1 labeledExpression
 
 labeledExpression :: Parser LabeledExpression
-labeledExpression = do
-  ident <- identifier
-  _ <- char ':'
-  expr <- expression
-  return $ LabeledExpression ident expr
+labeledExpression = LabeledExpression <$> identifier <* symbol ":" <*> expression
