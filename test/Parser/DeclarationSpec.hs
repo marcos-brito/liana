@@ -51,3 +51,49 @@ spec = do
                         ]
                   )
               )
+
+  describe "function" $
+    do
+      it "should parse a function with no body" $
+        do
+          parse functionDeclaration "" "fun some();"
+            `shouldBe` Right
+              ( FunctionDeclaration
+                  (Identifier "some")
+                  []
+                  Nothing
+                  []
+                  Nothing
+              )
+
+      it "should parse a function with arrow expr" $
+        do
+          parse functionDeclaration "" "fun some() -> true"
+            `shouldBe` Right
+              ( FunctionDeclaration
+                  (Identifier "some")
+                  []
+                  Nothing
+                  []
+                  ( Just $
+                      ArrowExpression
+                        (LiteralExpression $ BooleanLiteral True)
+                  )
+              )
+
+      it "should parse a function with block expr" $
+        do
+          parse functionDeclaration "" "fun some() {true;}"
+            `shouldBe` Right
+              ( FunctionDeclaration
+                  (Identifier "some")
+                  []
+                  Nothing
+                  []
+                  ( Just $
+                      BlockExpression
+                        [ ExpressionStatement $
+                              LiteralExpression (BooleanLiteral True)
+                        ]
+                  )
+              )
