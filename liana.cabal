@@ -30,7 +30,9 @@ library
         Syntax.Literal,
         Diagnostic,
         Test,
-        Test.Runner
+        Test.Runner,
+        Test.Report,
+        Test.Pretty
     -- other-modules:
     -- other-extensions:
     build-depends:
