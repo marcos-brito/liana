@@ -30,6 +30,7 @@ library
         Syntax.Literal,
         Diagnostic,
         Test,
+        Test.Parser,
         Test.Runner,
         Test.Report,
         Test.Pretty
