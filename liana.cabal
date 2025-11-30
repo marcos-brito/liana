@@ -28,7 +28,9 @@ library
         Syntax.Declaration,
         Syntax.Expression,
         Syntax.Literal,
-        Diagnostic
+        Diagnostic,
+        Test,
+        Test.Runner
     -- other-modules:
     -- other-extensions:
     build-depends:
